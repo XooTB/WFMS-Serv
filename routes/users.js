@@ -1,13 +1,10 @@
 import express from "express";
-import { addUser } from "../controllers/addUser.js";
-import { removeUser } from "../controllers/removeUser.js";
 import { requireAuth } from "../middleware/requireAuth.js";
+import { addUser, removeUser } from "../controllers/userControllers.js";
 
 const router = express.Router();
 
 // SignUp Sections
-
-router.use(requireAuth);
 
 router.get("/", (req, res) => {
   res.status(404).json({

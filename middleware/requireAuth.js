@@ -16,12 +16,18 @@ export const requireAuth = async (req, res, next) => {
 
   try {
     const { _id, role } = jwt.verify(token, process.env.JWT_KEY);
-    req.user = await User.findOne({ _id }).select(["_id", "role"]);
+    const sessionUser = await User.findOne({ _id }).select(["_id", "role"]);
+
+    if (!sessionUser) {
+      throw Error("Invalid Auth Key. Please Try Loggin in again.");
+    }
+
+    req.user = sessionUser;
 
     next();
   } catch (err) {
     res.status(401).json({
-      error: "Request is Not Authorized",
+      error: err.message,
     });
   }
 };

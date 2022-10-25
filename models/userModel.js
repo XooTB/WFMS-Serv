@@ -57,6 +57,8 @@ userSchema.statics.addUser = async function addUser(
   }
   //validation
 
+  // Duplicate Checking
+
   const emailExists = await this.findOne({ email });
 
   if (emailExists) {
@@ -68,6 +70,8 @@ userSchema.statics.addUser = async function addUser(
   if (userNameExists) {
     throw Error("Username already in use.");
   }
+
+  // Duplicate Checking
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
