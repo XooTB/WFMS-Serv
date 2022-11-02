@@ -1,6 +1,5 @@
 import express from "express";
-import { requireAuth } from "../middleware/requireAuth.js";
-import { addUser, removeUser } from "../controllers/userControllers.js";
+import { addUser, removeUser, users } from "../controllers/userControllers.js";
 
 const router = express.Router();
 
@@ -14,5 +13,6 @@ router.get("/", (req, res) => {
 
 router.post("/add", addUser);
 router.post("/remove", removeUser);
+router.post("/all", users);
 
 export default router;

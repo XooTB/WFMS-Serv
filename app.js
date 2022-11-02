@@ -8,6 +8,8 @@ import { requireAuth } from "./middleware/requireAuth.js";
 //Route Imports
 import users from "./routes/users.js";
 import login from "./routes/login.js";
+import test from "./routes/test.js";
+import order from "./routes/orderRoutes.js";
 
 //Config
 dotenv.config();
@@ -22,8 +24,10 @@ mongoose.connect(process.env.MONGO_URL).catch((err) => {
 
 //All the API Endpoints
 
+app.use("/api/test", test);
 app.use("/api/users", requireAuth, users);
 app.use("/api/login", login);
+app.use("/api/order", order);
 
 //All the Routes
 

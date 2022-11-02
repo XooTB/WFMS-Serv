@@ -79,3 +79,18 @@ export const login = async (req, res, next) => {
     });
   }
 };
+
+// List all the Users in the System
+
+export const users = async (req, res, next) => {
+  if (req.user.role != "ADMIN") {
+    res.status(401).json({
+      error: "Request not Authorized",
+    });
+  } else {
+    const users = await User.find().select("-_id -password");
+    res.status(200).json({
+      users,
+    });
+  }
+};
