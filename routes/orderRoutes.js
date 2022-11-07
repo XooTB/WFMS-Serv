@@ -1,5 +1,5 @@
 import express from "express";
-import { addOrder, deleteOrder } from "../controllers/orderControllers.js";
+import { addOrder, finishOrder } from "../controllers/orderControllers.js";
 
 const router = express.Router();
 
@@ -11,5 +11,6 @@ router.post("/", (req, res) => {
 
 // New Order
 router.post("/new", addOrder);
+router.post("/finish/:orderNumber", finishOrder);
 
 export default router;
