@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGO_URL).catch((err) => {
 app.use("/api/test", test);
 app.use("/api/users", requireAuth, users);
 app.use("/api/login", login);
-app.use("/api/order", order);
+app.use("/api/order", requireAuth, order);
 
 //All the Routes
 

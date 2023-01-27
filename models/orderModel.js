@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import validator from "validator";
 
 const Schema = mongoose.Schema;
 
@@ -81,10 +82,13 @@ orderSchema.statics.new = async function newOrder(orderInfo) {
 };
 
 // Find a Order from the Tables.
-orderSchema.statics.find = async function find(orderNumber) {
+orderSchema.statics.findByOrderNumber = async function find(orderNumber) {
+  if (!orderNumber) {
+    throw Error("Please Provide a valid Order Number.");
+  }
   const Order = await this.findOne({ orderNumber }).select("-_id");
   if (!Order) {
-    throw Error("Order Not found, Please enter the proper Order Number");
+    return null;
   }
   return Order;
 };
@@ -99,8 +103,22 @@ orderSchema.statics.remove = async function remove(orderNumber) {
   return true;
 };
 
-// Convert the Schema into Models.
+// Finding the Orders within a Date Range.
 
+orderSchema.statics.getOrders = async function getOrders(startDate, endDate) {
+  const Orders = await this.find({
+    arrival_date: { $gte: startDate, $lte: endDate },
+  }).select("-_id");
+
+  if (!Orders) {
+    return null;
+  }
+  return Orders;
+};
+
+// Convert the Schema into Models.
+//
+//
 const Order = mongoose.model("Order", orderSchema);
 const RunningOrder = mongoose.model("Running_Order", orderSchema);
 const FinishedOrder = mongoose.model("Finished_Order", orderSchema);

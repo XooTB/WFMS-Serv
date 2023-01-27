@@ -9,25 +9,25 @@ export const requireAuth = async (req, res, next) => {
     res.status(401).json({
       error: "Authorizaion Key Required",
     });
-  }
+  } else {
+    // Get the Auth Token from the Authorization Header
+    const token = authorization.split(" ")[1];
 
-  // Get the Auth Token from the Authorization Header
-  const token = authorization.split(" ")[1];
+    try {
+      const { _id, role } = jwt.verify(token, process.env.JWT_KEY);
+      const sessionUser = await User.findOne({ _id }).select(["_id", "role"]);
 
-  try {
-    const { _id, role } = jwt.verify(token, process.env.JWT_KEY);
-    const sessionUser = await User.findOne({ _id }).select(["_id", "role"]);
+      if (!sessionUser) {
+        throw Error("Invalid Auth Key. Please Try Loggin in again.");
+      }
 
-    if (!sessionUser) {
-      throw Error("Invalid Auth Key. Please Try Loggin in again.");
+      req.user = sessionUser;
+
+      next();
+    } catch (err) {
+      res.status(401).json({
+        error: err.message,
+      });
     }
-
-    req.user = sessionUser;
-
-    next();
-  } catch (err) {
-    res.status(401).json({
-      error: err.message,
-    });
   }
 };
