@@ -22,6 +22,6 @@ export const validateOrder = async (Order) => {
       return true;
     })
     .catch((err) => {
-      console.log(err.message);
+      return err.message;
     });
 };

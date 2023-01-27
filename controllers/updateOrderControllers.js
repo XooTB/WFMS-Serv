@@ -1,5 +1,4 @@
 import { RunningOrder, FinishedOrder } from "../models/orderModel.js";
-import { validateOrder } from "../scripts/orderValidator.js";
 //Update a Order
 
 export const updateOrder = async (req, res, next) => {
@@ -21,6 +20,9 @@ export const updateOrder = async (req, res, next) => {
       res.status(200).json({
         message: "Order Updated Successfully!",
       });
+
+      //
+      //
     } else {
       // If the Order is a Finished Order then Execute this block of Code.
       order = await FinishedOrder.findOne({ orderNumber });
